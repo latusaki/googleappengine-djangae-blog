@@ -1,10 +1,28 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block content %}
+
+
+    <header class="intro-header" style="background-image: url( {% static 'img/home-bg.jpg' %})">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>{{ object.title }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
 <p>Are you sure you want to delete article <strong>"{{ object.title }}"</strong>?</p>
-<form class="pure-form pure-form-stacked" method='post'>
+<form role="form"  method='post'>
     {% csrf_token %}
-    <a class="pure-button pure-button-primary" href={% url 'index' %}>No</a>
-    <input class="pure-button pure-button-primary" type='submit' value='Yes, delete it please' />
+    <a class="btn btn-default" href={% url 'index' %}>No</a>
+    <input class="btn btn-default btn-danger" type='submit' value='Yes, delete it please' />
 </form>
+</div>
 {% endblock %}
