@@ -38,7 +38,7 @@
                     {{ object.body|linebreaks }}
                 </h3>
             </a>
-            <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on  {{ object.created_at }}
+            <p class="post-meta">Posted by {{ active_user }} on  {{ object.created_at }}
                               {% if is_admin %}
                                                 <a href="{% url 'article_admin_update' object.id %}">Edit</a>,
                                                 <a href="{% url 'article_admin_delete' object.id %}">Delete</a>
@@ -52,7 +52,6 @@
                             </div>            
                         </div>
 
-                <hr>
                 <!-- Pager -->
                 <ul class="pager">
                     <li class="next">
