@@ -19,3 +19,5 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    author_id =  models.CharField(max_length=255)
+    author_email = models.CharField(max_length=255)

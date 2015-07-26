@@ -41,6 +41,20 @@ class AdminRequiredMixin(object):
         return super(AdminRequiredMixin, self).dispatch(
             request, *args, **kwargs)
 
+class UserRequiredMixin(object):
+    """
+    Mixin that redirects to the login page if users are not
+    authenticated or they are not administrators
+    """
+    def get_after_login_url(self):
+        return reverse('index')
+
+    def dispatch(self, request, *args, **kwargs):
+        if users.get_current_user() is None:
+            url = users.create_login_url(self.get_after_login_url())
+            return HttpResponseRedirect(url)
+        return super(UserRequiredMixin, self).dispatch(
+            request, *args, **kwargs)
 
 class FourOFour(BlogMixin, TemplateView):
     template_name = '404.html'
@@ -79,9 +93,10 @@ class IndexView(BlogMixin, ListView):
     context_object_name = "article_list" 
     queryset = Article.objects.all().order_by('-created_at')
     paginate_by = Blog.get_unique().paginate_by
+    print paginate_by
 
 
-class ArticleAdminCreateView(AdminRequiredMixin, BlogMixin, CreateView):
+class ArticleAdminCreateView(UserRequiredMixin, BlogMixin, CreateView):
     """
     Administration page to create articles.
     """

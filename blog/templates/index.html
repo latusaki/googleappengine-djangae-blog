@@ -38,7 +38,13 @@
                     {{ object.body|linebreaks }}
                 </h3>
             </a>
-            <p class="post-meta">Posted by {{ active_user }} on  {{ object.created_at }}
+            <p class="post-meta">Posted by 
+            {% if object.author_email %}
+            {{ object.author_email }} 
+            {% else %}
+            anonymous
+            {% endif %}
+            on  {{ object.created_at }}
                               {% if is_admin %}
                                                 <a href="{% url 'article_admin_update' object.id %}">Edit</a>,
                                                 <a href="{% url 'article_admin_delete' object.id %}">Delete</a>
