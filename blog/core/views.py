@@ -3,7 +3,6 @@ from django.views.generic import (
 )
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-
 from google.appengine.api import users
 
 from blog.core.models import Article, Blog
@@ -77,7 +76,10 @@ class IndexView(BlogMixin, ListView):
     all the articles.
     """
     template_name = 'index.html'
+    context_object_name = "article_list" 
     queryset = Article.objects.all().order_by('-created_at')
+    paginate_by = 2
+
 
 
 class ArticleAdminCreateView(AdminRequiredMixin, BlogMixin, CreateView):
