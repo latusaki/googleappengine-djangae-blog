@@ -18,4 +18,7 @@ class ArticleForm(forms.ModelForm):
 class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
-        fields = ('title', 'tagline')
+        fields = ('title', 'tagline','paginate_by')
+        labels = {
+            'paginate_by': ('Post per page')
+        }

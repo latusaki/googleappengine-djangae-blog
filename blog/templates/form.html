@@ -25,14 +25,33 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 			
-			<form role="form" class="pure-form pure-form-stacked" method='post'>
+			<form role="form" method='post'>
+
 			    {% csrf_token %}
 			    {% for field in form %}
+
+
+			    	{% if field.errors %}
+				    <div class="form-group has-error error has-feedback">
+			        <label class="control-label" for="{{field.name}}">{{field.label}}:</label>
+
+						{% for error in field.errors %}
+			          <div class="controls">
+			        	{{ field|empower:"form-control" }}
+		        	    <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+				        <span class="help-block">{{ error|escape }}</span>
+				      </div>
+					    {% endfor %}
+					</div>
+					{% else %}
+
 					<div class="form-group">
 					    <label for="{{field.name}}">{{field.label}}:</label>
-					    	
+
 			        	{{ field|empower:"form-control" }}
 				    </div>
+					{% endif %}
+
 			    {% endfor %}
 			    <input class="btn btn-default" type='submit' value='Submit' />
 			</form>

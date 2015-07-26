@@ -78,8 +78,7 @@ class IndexView(BlogMixin, ListView):
     template_name = 'index.html'
     context_object_name = "article_list" 
     queryset = Article.objects.all().order_by('-created_at')
-    paginate_by = 2
-
+    paginate_by = Blog.get_unique().paginate_by
 
 
 class ArticleAdminCreateView(AdminRequiredMixin, BlogMixin, CreateView):
