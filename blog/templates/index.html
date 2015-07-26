@@ -1,31 +1,68 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block content %}
-<div class="posts">
-    <h1 class="content-subhead">Recent posts</h1>
 
-    <!-- A single blog post -->
-    {% for object in object_list %}
-    <section class="post">
-        <header class="post-header">
-            <h2 class="post-title">{{ object.title }}</h2>
-            <p class="post-meta">
-                {{ object.created_at }}
-                {% if is_admin %}
-                    <a href="{% url 'article_admin_update' object.id %}">Edit</a>,
-                    <a href="{% url 'article_admin_delete' object.id %}">Delete</a>
-                {% endif %}
-            </p>
-        </header>
-
-        <div class="post-description">
-            <p>
-                {{ object.body|linebreaks }}
-            </p>
+ <!-- Page Header -->
+    <!-- Set your background image for this header on the line below.  -->
+    
+    <header class="intro-header" style="background-image: url( {% static 'img/home-bg.jpg' %})">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>{{ blog.title }}</h1>
+                        <hr class="small">
+                        <span class="subheading">{{ blog.tagline|default_if_none:"" }}</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
-    {% empty %}
-        <p>This blog looks empty!</p>
-    {% endfor %}
-</div>
-{% endblock %}
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <div>
+                            <div class="posts">
+
+                                <!-- A single blog post -->
+                                {% for object in object_list %}
+        <div class="post-preview">
+            <a href="PostPage">
+                <h2 class="post-title">
+                    {{ object.title }}
+                </h2>
+                <h3 class="post-subtitle">
+                    {{ object.body|linebreaks }}
+                </h3>
+            </a>
+            <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on  {{ object.created_at }}
+                              {% if is_admin %}
+                                                <a href="{% url 'article_admin_update' object.id %}">Edit</a>,
+                                                <a href="{% url 'article_admin_delete' object.id %}">Delete</a>
+                                            {% endif %}</p>
+        </div>
+        <hr>
+ 
+                                {% empty %}
+                                    <p>This blog looks empty!</p>
+                                {% endfor %}
+                            </div>            
+                        </div>
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    <li class="next">
+                        <a href="#">Older Posts &rarr;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    {% endblock %}

@@ -1,17 +1,46 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% load fields %}
 
 {% block content %}
-<div class="pure-input-1">
-<form class="pure-form pure-form-stacked" method='post'>
-    {% csrf_token %}
-    {% for field in form %}
-        <div class="django-field">
-            {{ field|empower:"pure-input-1" }}
+
+    <header class="intro-header" style="background-image: url( {% static 'img/home-bg.jpg' %})">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>New Post</h1>
+                        <hr class="small">
+                    </div>
+                </div>
+            </div>
         </div>
-    {% endfor %}
-    <input class="pure-button pure-button-primary" type='submit' value='Submit' />
-</form>
-</div>
+    </header>
+
+
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+			
+			<form role="form" class="pure-form pure-form-stacked" method='post'>
+			    {% csrf_token %}
+			    {% for field in form %}
+					<div class="form-group">
+					    <label for="{{field.name}}">{{field.label}}:</label>
+					    	
+			        	{{ field|empower:"form-control" }}
+				    </div>
+			    {% endfor %}
+			    <input class="btn btn-default" type='submit' value='Submit' />
+			</form>
+			</div>
+
+        </div>
+    </div>
+
+    <hr>
+
 {% endblock %}

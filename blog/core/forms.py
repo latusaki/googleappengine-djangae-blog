@@ -7,6 +7,12 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ('title', 'body')
+        labels = {
+            'body': ('Content')
+        }
+        help_texts = {
+            'body': ('Write your thoughts...')
+        }
 
 
 class BlogForm(forms.ModelForm):
