@@ -36,7 +36,10 @@
                     {{ object.title }}
                 </h2>
                 <h3 class="post-subtitle">
-                    {{ object.body|linebreaks }}
+
+                {% with content=object.body|truncatechars:80 %}
+                {{content|linebreaks}}
+                {% endwith %}
                 </h3>
             </a>
             <p class="post-meta">Posted by 
