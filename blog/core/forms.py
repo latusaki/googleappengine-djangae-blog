@@ -1,10 +1,10 @@
 from django import forms
 
-from blog.core.models import Article, Blog
+from blog.core.models import Post, Blog
 
 from google.appengine.api import users
 
-class ArticleForm(forms.ModelForm):
+class PostForm(forms.ModelForm):
     if users.get_current_user() is not None:
         user_id = users.get_current_user().user_id()
         user_email = users.get_current_user().email()
@@ -12,7 +12,7 @@ class ArticleForm(forms.ModelForm):
         author_email = forms.CharField(widget=forms.HiddenInput(), initial=user_email)
 
     class Meta:
-        model = Article
+        model = Post
         fields = ('title', 'body','author_id','author_email')
         labels = {
             'body': ('Content')

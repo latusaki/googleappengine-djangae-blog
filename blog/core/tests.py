@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase as DjangoTestCase
 from google.appengine.ext import testbed
 
-from blog.core.models import Blog, Article
+from blog.core.models import Blog, Post
 
 
 User = get_user_model()
@@ -45,16 +45,16 @@ def create_blog(**kwargs):
     return Blog.objects.create(**default_kwargs)
 
 
-def create_article(**kwargs):
+def create_post(**kwargs):
     """
-    Helper function to create an article in tests
+    Helper function to create an post in tests
     """
     default_kwargs = {
-        'title': 'article_title',
-        'body': 'article_body'
+        'title': 'post_title',
+        'body': 'post_body'
     }
     default_kwargs.update(kwargs)
-    return Article.objects.create(**default_kwargs)
+    return Post.objects.create(**default_kwargs)
 
 
 class TestBlogModel(TestCase):
@@ -81,20 +81,20 @@ class TestIndexPage(TestCase):
         self.assertContains(resp, 'blog_title')
         self.assertContains(resp, 'blog_tagline')
 
-    def test_no_articles(self):
+    def test_no_posts(self):
         resp = self.client.get(self.url)
         self.assertContains(resp, 'This blog looks empty!')
 
-    def test_articles_title_in_page(self):
-        create_article(title='title_article_one', body='body_one')
-        create_article(title='title_article_two',  body='body_two')
+    def test_posts_title_in_page(self):
+        create_post(title='title_post_one', body='body_one')
+        create_post(title='title_post_two',  body='body_two')
         resp = self.client.get(self.url)
-        self.assertContains(resp, 'title_article_one')
-        self.assertContains(resp, 'title_article_two')
+        self.assertContains(resp, 'title_post_one')
+        self.assertContains(resp, 'title_post_two')
 
-    def test_articles_body_in_page(self):
-        create_article(title='title_article_one', body='body_one')
-        create_article(title='title_article_two',  body='body_two')
+    def test_posts_body_in_page(self):
+        create_post(title='title_post_one', body='body_one')
+        create_post(title='title_post_two',  body='body_two')
         resp = self.client.get(self.url)
         self.assertContains(resp, 'body_one')
         self.assertContains(resp, 'body_two')
@@ -104,7 +104,7 @@ class TestIndexPage(TestCase):
         resp = self.client.get(self.url)
         self.assertContains(resp, 'Index')
         self.assertContains(resp, 'Settings')
-        self.assertContains(resp, 'Add article')
+        self.assertContains(resp, 'Add post')
         self.assertContains(resp, 'Logout')
         self.assertNotContains(resp, 'Login')
 
@@ -115,14 +115,14 @@ class TestIndexPage(TestCase):
         self.assertContains(resp, 'Logout')
         self.assertNotContains(resp, 'Login')
         self.assertNotContains(resp, 'Settings')
-        self.assertNotContains(resp, 'Add article')
+        self.assertNotContains(resp, 'Add post')
 
     def test_visible_menu_when_not_authenticated(self):
         resp = self.client.get(self.url)
         self.assertContains(resp, 'Index')
         self.assertContains(resp, 'Login')
         self.assertNotContains(resp, 'Settings')
-        self.assertNotContains(resp, 'Add article')
+        self.assertNotContains(resp, 'Add post')
         self.assertNotContains(resp, 'Logout')
 
     def test_tagline_not_displayed_if_its_none(self):
@@ -169,13 +169,13 @@ class TestUpdateBlog(TestCase):
         self.assertEqual(blog.tagline, 'new_tagline')
 
 
-class TestUpdateArticle(TestCase):
+class TestUpdatePost(TestCase):
     def setUp(self):
         create_blog()
-        self.article = create_article(title='title123', body='body123')
+        self.post = create_post(title='title123', body='body123')
         self.url = reverse(
-            'article_admin_update',
-            kwargs={'pk': self.article.pk}
+            'post_admin_update',
+            kwargs={'pk': self.post.pk}
         )
 
     def test_user_not_admin(self):
@@ -187,7 +187,7 @@ class TestUpdateArticle(TestCase):
         resp = self.client.get(self.url)
         self.assertEqual(resp.status_code, 302)
 
-    def test_form_contains_article_title_and_body(self):
+    def test_form_contains_post_title_and_body(self):
         self.users_login('admin@localhost', is_admin=True)
         resp = self.client.get(self.url)
         self.assertContains(resp, 'title123')
@@ -199,9 +199,9 @@ class TestUpdateArticle(TestCase):
 
         self.client.post(self.url, data)
 
-        article = Article.objects.get(pk=self.article.pk)
-        self.assertEqual(article.title, 'title123')
-        self.assertEqual(article.body, 'body123')
+        post = Post.objects.get(pk=self.post.pk)
+        self.assertEqual(post.title, 'title123')
+        self.assertEqual(post.body, 'body123')
 
     def test_post_no_title(self):
         self.users_login('admin@localhost', is_admin=True)
@@ -209,9 +209,9 @@ class TestUpdateArticle(TestCase):
 
         self.client.post(self.url, data)
 
-        article = Article.objects.get(pk=self.article.pk)
-        self.assertEqual(article.title, 'title123')
-        self.assertEqual(article.body, 'body123')
+        post = Post.objects.get(pk=self.post.pk)
+        self.assertEqual(post.title, 'title123')
+        self.assertEqual(post.body, 'body123')
 
     def test_post_valid(self):
         self.users_login('admin@localhost', is_admin=True)
@@ -219,86 +219,86 @@ class TestUpdateArticle(TestCase):
 
         self.client.post(self.url, data)
 
-        article = Article.objects.get(pk=self.article.pk)
-        self.assertEqual(article.title, 'new_title')
-        self.assertEqual(article.body, 'new_body')
+        post = Post.objects.get(pk=self.post.pk)
+        self.assertEqual(post.title, 'new_title')
+        self.assertEqual(post.body, 'new_body')
 
 
-class TestDeleteArticle(TestCase):
+class TestDeletePost(TestCase):
     def setUp(self):
         create_blog()
-        self.article = create_article()
+        self.post = create_post()
 
     def test_user_not_admin_get(self):
         self.users_login('user@localhost', is_admin=False)
-        url = reverse('article_admin_delete', kwargs={'pk': self.article.pk})
+        url = reverse('post_admin_delete', kwargs={'pk': self.post.pk})
 
         resp = self.client.get(url)
 
         self.assertEqual(resp.status_code, 302)
-        self.assertEqual(Article.objects.all().count(), 1)
+        self.assertEqual(Post.objects.all().count(), 1)
 
     def test_user_not_admin_post(self):
         self.users_login('user@localhost', is_admin=False)
-        url = reverse('article_admin_delete', kwargs={'pk': self.article.pk})
+        url = reverse('post_admin_delete', kwargs={'pk': self.post.pk})
 
         resp = self.client.post(url, data={})
 
         self.assertEqual(resp.status_code, 302)
-        self.assertEqual(Article.objects.all().count(), 1)
+        self.assertEqual(Post.objects.all().count(), 1)
 
     def test_user_not_authenticated_get(self):
-        url = reverse('article_admin_delete', kwargs={'pk': self.article.pk})
+        url = reverse('post_admin_delete', kwargs={'pk': self.post.pk})
 
         resp = self.client.get(url)
 
         self.assertEqual(resp.status_code, 302)
-        self.assertEqual(Article.objects.all().count(), 1)
+        self.assertEqual(Post.objects.all().count(), 1)
 
     def test_user_not_authenticated_post(self):
-        url = reverse('article_admin_delete', kwargs={'pk': self.article.pk})
+        url = reverse('post_admin_delete', kwargs={'pk': self.post.pk})
 
         resp = self.client.post(url)
 
         self.assertEqual(resp.status_code, 302)
-        self.assertEqual(Article.objects.all().count(), 1)
+        self.assertEqual(Post.objects.all().count(), 1)
 
-    def test_article_does_not_exist_get(self):
+    def test_post_does_not_exist_get(self):
         self.users_login('admin@localhost', is_admin=True)
         url = reverse(
-            'article_admin_delete', kwargs={'pk': self.article.pk + 1}
+            'post_admin_delete', kwargs={'pk': self.post.pk + 1}
         )
 
         resp = self.client.get(url)
 
         self.assertEqual(resp.status_code, 404)
-        self.assertEqual(Article.objects.all().count(), 1)
+        self.assertEqual(Post.objects.all().count(), 1)
 
-    def test_article_does_not_exist_post(self):
+    def test_post_does_not_exist_post(self):
         self.users_login('admin@localhost', is_admin=True)
         url = reverse(
-            'article_admin_delete', kwargs={'pk': self.article.pk + 1}
+            'post_admin_delete', kwargs={'pk': self.post.pk + 1}
         )
 
         resp = self.client.post(url)
 
         self.assertEqual(resp.status_code, 404)
-        self.assertEqual(Article.objects.all().count(), 1)
+        self.assertEqual(Post.objects.all().count(), 1)
 
-    def test_article_exist_get(self):
+    def test_post_exist_get(self):
         self.users_login('admin@localhost', is_admin=True)
-        url = reverse('article_admin_delete', kwargs={'pk': self.article.pk})
+        url = reverse('post_admin_delete', kwargs={'pk': self.post.pk})
 
         resp = self.client.get(url)
 
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(Article.objects.all().count(), 1)
+        self.assertEqual(Post.objects.all().count(), 1)
 
-    def test_article_exist_post(self):
+    def test_post_exist_post(self):
         self.users_login('admin@localhost', is_admin=True)
-        url = reverse('article_admin_delete', kwargs={'pk': self.article.pk})
+        url = reverse('post_admin_delete', kwargs={'pk': self.post.pk})
 
         resp = self.client.post(url)
 
         self.assertRedirects(resp, reverse('index'))
-        self.assertEqual(Article.objects.all().count(), 0)
+        self.assertEqual(Post.objects.all().count(), 0)

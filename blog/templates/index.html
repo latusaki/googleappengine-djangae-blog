@@ -28,9 +28,10 @@
                             <div class="posts">
 
                                 <!-- A single blog post -->
-                                {% for object in article_list %}
+                                {% for object in post_list %}
         <div class="post-preview">
-            <a href="PostPage">
+            <a href="../post/{{ object.id }}" > 
+
                 <h2 class="post-title">
                     {{ object.title }}
                 </h2>
@@ -46,8 +47,8 @@
             {% endif %}
             on  {{ object.created_at }}
                               {% if is_admin %}
-                                                <a href="{% url 'article_admin_update' object.id %}">Edit</a>,
-                                                <a href="{% url 'article_admin_delete' object.id %}">Delete</a>
+                                                <a href="{% url 'post_admin_update' object.id %}">Edit</a>,
+                                                <a href="{% url 'post_admin_delete' object.id %}">Delete</a>
                                             {% endif %}</p>
         </div>
         <hr>

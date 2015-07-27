@@ -1,12 +1,12 @@
 from django.views.generic import (
-    ListView, View, DeleteView, UpdateView, CreateView, TemplateView
+    ListView, View, DeleteView, UpdateView, CreateView, TemplateView, DetailView
 )
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from google.appengine.api import users
 
-from blog.core.models import Article, Blog
-from blog.core.forms import ArticleForm, BlogForm
+from blog.core.models import Post, Blog
+from blog.core.forms import PostForm, BlogForm
 
 
 class BlogMixin(object):
@@ -87,21 +87,21 @@ class LogoutView(View):
 class IndexView(BlogMixin, ListView):
     """
     The index page of the site. Contains the body and the titles of
-    all the articles.
+    all the posts.
     """
     template_name = 'index.html'
-    context_object_name = "article_list" 
-    queryset = Article.objects.all().order_by('-created_at')
+    context_object_name = "post_list" 
+    queryset = Post.objects.all().order_by('-created_at')
     paginate_by = Blog.get_unique().paginate_by
     print paginate_by
 
 
-class ArticleAdminCreateView(UserRequiredMixin, BlogMixin, CreateView):
+class PostAdminCreateView(UserRequiredMixin, BlogMixin, CreateView):
     """
-    Administration page to create articles.
+    Administration page to create posts.
     """
     template_name = 'form.html'
-    form_class = ArticleForm
+    form_class = PostForm
 
     def get_success_url(self):
         return reverse('index')
@@ -120,25 +120,29 @@ class BlogAdminUpdateView(AdminRequiredMixin, BlogMixin, UpdateView):
     def get_object(self):
         return Blog.get_unique()
 
+class PostDetailView(BlogMixin,DetailView):
+    """ A view for displaying a single post """
+    template_name = 'post.html'
+    model = Post
 
-class ArticleAdminDeleteView(AdminRequiredMixin, BlogMixin, DeleteView):
+class PostAdminDeleteView(AdminRequiredMixin, BlogMixin, DeleteView):
     """
-    Delete the article with a given key
+    Delete the post with a given key
     """
-    model = Article
-    template_name = 'article_confirm_delete.html'
+    model = Post
+    template_name = 'post_confirm_delete.html'
 
     def get_success_url(self):
         return reverse('index')
 
 
-class ArticleAdminUpdateView(AdminRequiredMixin, BlogMixin, UpdateView):
+class PostAdminUpdateView(AdminRequiredMixin, BlogMixin, UpdateView):
     """
-    Administration page to update articles.
+    Administration page to update posts.
     """
     template_name = 'form.html'
-    form_class = ArticleForm
-    model = Article
+    form_class = PostForm
+    model = Post
 
     def get_success_url(self):
         return reverse('index')

@@ -18,7 +18,7 @@
 
     <div class="container">
 
-<p>Are you sure you want to delete article <strong>"{{ object.title }}"</strong>?</p>
+<p>Are you sure you want to delete post <strong>"{{ object.title }}"</strong>?</p>
 <form role="form"  method='post'>
     {% csrf_token %}
     <a class="btn btn-default" href={% url 'index' %}>No</a>

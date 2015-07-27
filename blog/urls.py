@@ -16,11 +16,13 @@ urlpatterns = patterns(
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^login/$', views.LoginView.as_view(), name='login'),
     url(r'^logout/$', views.LogoutView.as_view(), name='logout'),
-    url(r'^add/$', views.ArticleAdminCreateView.as_view(), name='article_admin_create'),
+    url(r'^add/$', views.PostAdminCreateView.as_view(), name='post_admin_create'),
     url(r'^manage-blog/$', views.BlogAdminUpdateView.as_view(), name='blog_admin_update'),
-    url(r'^delete-article/(?P<pk>[\d]+)/$', views.ArticleAdminDeleteView.as_view(), name='article_admin_delete'),
-    url(r'^update-article/(?P<pk>[\d]+)/$', views.ArticleAdminUpdateView.as_view(), name='article_admin_update'),
+    url(r'^delete-post/(?P<pk>[\d]+)/$', views.PostAdminDeleteView.as_view(), name='post_admin_delete'),
+    url(r'^update-post/(?P<pk>[\d]+)/$', views.PostAdminUpdateView.as_view(), name='post_admin_update'),
+    url(r'^post/(?P<pk>[\d]+)/$', views.PostDetailView.as_view(), name="post-detail"),
 )
+
 
 
 if not settings.DEBUG:
