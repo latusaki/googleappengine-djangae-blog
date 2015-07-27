@@ -7,6 +7,8 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+from django.conf import global_settings
+import django.core
 
 import os
 from djangae.settings_base import * #Set up some AppEngine specific stuff
@@ -41,6 +43,7 @@ INSTALLED_APPS = (
     'djangae.contrib.gauth',
     'djangae',
     'blog.core',
+    'django_social_share',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -76,6 +79,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + ('django.core.context_processors.request',)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/

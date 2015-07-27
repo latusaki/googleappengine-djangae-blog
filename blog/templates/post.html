@@ -3,6 +3,7 @@
 
 {% block content %}
 
+{% load social_share %}
 
 
     <!-- Page Header -->
@@ -27,6 +28,7 @@
             </div>
         </div>
     </header>
+
     <article>
         <div class="container">
             <div class="row">
@@ -35,7 +37,31 @@
 				</div>
 			</div>
 		</div>
+
 	</article>
+
+	
+	<!-- javascript:window.open('{% post_to_twitter object.title object %}', 'yourWindowName', 'width=500,height=300');" -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                    
+<a href="{% post_to_twitter object.title object %}"title="Share on Twitter" target="_blank" class="btn-sm btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
+                    </li>
+                    <li>
+                    <a href="{% post_to_facebook object %}" title="Share on Facebook" target="_blank" class="btn-sm btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
+                      
+                    </li>
+                    <li>
+                    <a href="{% post_to_gplus object %}" title="Share on Google+" target="_blank" class="btn-sm btn-googleplus"><i class="fa fa-google-plus"></i> Google+</a>
+                        
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 
 

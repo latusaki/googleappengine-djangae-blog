@@ -21,3 +21,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     author_id =  models.CharField(max_length=255)
     author_email = models.CharField(max_length=255)
+
+    def get_absolute_url(self):
+        from django.core.urlresolvers import reverse
+        return reverse('post-detail', args=[str(self.id)])
