@@ -72,30 +72,16 @@
     <h4>Leave a comment</h4>
  
     <form role="form" class="clearfix" method="post">
-                    {% csrf_token %}
-
-                {% for field in form.visible_fields %}
-
-                    <div class="form-group">
-                        <label for="{{field.name}}">{{field.label}}:</label>
-
-                        {{ field}}
-                    </div>
-                {% endfor %}
+        {% csrf_token %}
 
         <div class="col-md-6 form-group">
             <label class="sr-only" for="name">Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Name">
-        </div>
- 
-        <div class="col-md-6 form-group">
-            <label class="sr-only" for="email">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="Email">
+            <input type="text" name="author_name" class="form-control" id="name" placeholder="Name">
         </div>
  
         <div class="col-md-12 form-group">
-            <label class="sr-only" for="email">Comment</label>
-            <textarea class="form-control" id="comment" placeholder="Comment"></textarea>
+            <label class="sr-only" for="comment">Comment</label>
+            <textarea class="form-control" name="body" id="comment" placeholder="Comment"></textarea>
         </div>
  
         <div class="col-md-12 form-group text-right">
@@ -106,36 +92,26 @@
 </div>
 
 
-    {% for comment in post.comments.all %}
-        commentsadsad 
-        {{comment}}
-    {% endfor %}
+       
 
-    
+
 <ul class="media-list">
+    {% for comment in post.comments.all %}
+
   <li class="media">
     <a class="pull-left" href="#">
       <img class="media-object" data-src="holder.js/64x64">
     </a>
     <div class="media-body">
-    <h4 class="media-heading">John on 16 Sept 2015</h4>
+    <h4 class="media-heading">{{comment.author_name}} on {{comment.created_at}}</h4>
 
-    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-              
-    </div>
-  </li>
-    <li class="media">
-    <a class="pull-left" href="#">
-      <img class="media-object" data-src="holder.js/64x64">
-    </a>
-    <div class="media-body">
-    <h4 class="media-heading">Jack on 16 Sept 2015</h4>
-    
-    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-              
+            {{comment.body | linebreaks}}
 
     </div>
   </li>
+
+  {% endfor %}
+
 </ul>
 
 </div>

@@ -31,4 +31,5 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     author_name = models.CharField(max_length=255)
     parent_post = models.ForeignKey('Post',related_name='comments')
-    
+    class Meta:
+        ordering = ["-created_at"]
