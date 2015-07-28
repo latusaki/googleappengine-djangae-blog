@@ -32,6 +32,8 @@ TEMPLATE_DEBUG = True
 # Application definition
 
 INSTALLED_APPS = (
+    'djangae',
+    'djangae.contrib.gauth',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,8 +42,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'djangosecure',
     'csp',
-    'djangae.contrib.gauth',
-    'djangae',
     'blog.core',
     'django_social_share',
 )

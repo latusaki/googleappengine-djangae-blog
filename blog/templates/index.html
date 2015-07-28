@@ -30,7 +30,7 @@
                                 <!-- A single blog post -->
                                 {% for object in post_list %}
         <div class="post-preview">
-            <a href="../post/{{ object.id }}" > 
+            <a href="{% url 'post-detail' object.id %}" > 
 
                 <h2 class="post-title">
                     {{ object.title }}

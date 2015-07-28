@@ -13,15 +13,15 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>{{ object.title}}</h1>
+                        <h1>{{ post.title}}</h1>
 
                         <span class="meta"> Posted by 
-					            {% if object.author_email %}
-					            {{ object.author_email }} 
+					            {% if post.author_email %}
+					            {{ post.author_email }} 
 					            {% else %}
 					            anonymous
 					            {% endif %}
-					            on  {{ object.created_at }}
+					            on  {{ post.created_at }}
 			            </span>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-					{{ object.body | linebreaks}}
+					{{ post.body | linebreaks}}
 				</div>
 			</div>
 		</div>
@@ -48,20 +48,98 @@
                 <ul class="list-inline text-center">
                     <li>
                     
-<a href="{% post_to_twitter object.title object %}"title="Share on Twitter" target="_blank" class="btn-sm btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
+<a href="{% post_to_twitter post.title post %}"title="Share on Twitter" target="_blank" class="btn-sm btn-twitter"><i class="fa fa-twitter"></i> Tweet</a>
                     </li>
                     <li>
-                    <a href="{% post_to_facebook object %}" title="Share on Facebook" target="_blank" class="btn-sm btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
+                    <a href="{% post_to_facebook post %}" title="Share on Facebook" target="_blank" class="btn-sm btn-facebook"><i class="fa fa-facebook"></i> Share</a>
                       
                     </li>
                     <li>
-                    <a href="{% post_to_gplus object %}" title="Share on Google+" target="_blank" class="btn-sm btn-googleplus"><i class="fa fa-google-plus"></i> Google+</a>
+                    <a href="{% post_to_gplus post %}" title="Share on Google+" target="_blank" class="btn-sm btn-googleplus"><i class="fa fa-google-plus"></i> + Share</a>
                         
                     </li>
                 </ul>
             </div>
         </div>
     </div>
+    <hr/>
+
+
+    <div class="container">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div class="well">
+ 
+    <h4>Leave a comment</h4>
+ 
+    <form role="form" class="clearfix" method="post">
+                    {% csrf_token %}
+
+                {% for field in form.visible_fields %}
+
+                    <div class="form-group">
+                        <label for="{{field.name}}">{{field.label}}:</label>
+
+                        {{ field}}
+                    </div>
+                {% endfor %}
+
+        <div class="col-md-6 form-group">
+            <label class="sr-only" for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Name">
+        </div>
+ 
+        <div class="col-md-6 form-group">
+            <label class="sr-only" for="email">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Email">
+        </div>
+ 
+        <div class="col-md-12 form-group">
+            <label class="sr-only" for="email">Comment</label>
+            <textarea class="form-control" id="comment" placeholder="Comment"></textarea>
+        </div>
+ 
+        <div class="col-md-12 form-group text-right">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+ 
+    </form>                   
+</div>
+
+
+    {% for comment in post.comments.all %}
+        commentsadsad 
+        {{comment}}
+    {% endfor %}
+
+    
+<ul class="media-list">
+  <li class="media">
+    <a class="pull-left" href="#">
+      <img class="media-object" data-src="holder.js/64x64">
+    </a>
+    <div class="media-body">
+    <h4 class="media-heading">John on 16 Sept 2015</h4>
+
+    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+              
+    </div>
+  </li>
+    <li class="media">
+    <a class="pull-left" href="#">
+      <img class="media-object" data-src="holder.js/64x64">
+    </a>
+    <div class="media-body">
+    <h4 class="media-heading">Jack on 16 Sept 2015</h4>
+    
+    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+              
+
+    </div>
+  </li>
+</ul>
+
+</div>
+</div>
 
 
 

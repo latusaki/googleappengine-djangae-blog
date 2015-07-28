@@ -1,11 +1,13 @@
 from django.views.generic import (
     ListView, View, DeleteView, UpdateView, CreateView, TemplateView, DetailView
 )
+from django.shortcuts import redirect
+
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from google.appengine.api import users
 
-from blog.core.models import Post, Blog
+from blog.core.models import Post, Blog, Comment
 from blog.core.forms import PostForm, BlogForm
 
 
@@ -120,10 +122,25 @@ class BlogAdminUpdateView(AdminRequiredMixin, BlogMixin, UpdateView):
     def get_object(self):
         return Blog.get_unique()
 
-class PostDetailView(BlogMixin,DetailView):
+class PostDetailView(BlogMixin,CreateView):
     """ A view for displaying a single post """
     template_name = 'post.html'
-    model = Post
+    model = Comment
+    fields = ['body','author_name'] 
+    def get_context_data(self, **kwargs):
+
+        context = super(PostDetailView, self).get_context_data(**kwargs)
+        context['post'] =  Post.objects.get(pk=self.kwargs['pk'])
+        return context
+    
+    def form_valid(self, form):
+        # self.object = form.save()
+        obj = form.save(commit=False)
+        obj.parent_post = Post.objects.get(pk=self.kwargs['pk'])
+        obj.save()
+
+        return redirect('post-detail', self.kwargs['pk'])
+
 
 class PostAdminDeleteView(AdminRequiredMixin, BlogMixin, DeleteView):
     """

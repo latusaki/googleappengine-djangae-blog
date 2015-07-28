@@ -25,3 +25,10 @@ class Post(models.Model):
     def get_absolute_url(self):
         from django.core.urlresolvers import reverse
         return reverse('post-detail', args=[str(self.id)])
+
+class Comment(models.Model):
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    author_name = models.CharField(max_length=255)
+    parent_post = models.ForeignKey('Post',related_name='comments')
+    
