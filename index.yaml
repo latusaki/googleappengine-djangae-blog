@@ -31,6 +31,24 @@ indexes:
   - name: created_at
     direction: desc
 
+- kind: core_post
+  properties:
+  - name: _idx_contains_title_0
+  - name: created_at
+    direction: desc
+
+- kind: core_post
+  properties:
+  - name: _idx_icontains_title_0
+  - name: created_at
+    direction: desc
+
+- kind: core_post
+  properties:
+  - name: title
+  - name: created_at
+    direction: desc
+
 - kind: djangae_gaedatastoreuser
   properties:
   - name: __key__

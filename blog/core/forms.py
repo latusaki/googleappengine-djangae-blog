@@ -25,8 +25,6 @@ class PostForm(forms.ModelForm):
         
         return obj
 
-
-
 class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog

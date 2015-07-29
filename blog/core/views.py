@@ -92,10 +92,24 @@ class IndexView(BlogMixin, ListView):
     all the posts.
     """
     template_name = 'index.html'
-    context_object_name = "post_list" 
-    queryset = Post.objects.all().order_by('-created_at')
     paginate_by = Blog.get_unique().paginate_by
-    print paginate_by
+    context_object_name = "post_list" 
+
+    def get_queryset(self):
+        if(self.request.GET.get('q')):        
+            query_str = self.request.GET.get('q')
+            return Post.objects.filter(title__icontains=query_str).order_by('-created_at')
+        return Post.objects.all().order_by('-created_at')
+        
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context['search_query'] =  self.request.GET.get('q')
+        queries_without_page = self.request.GET.copy()
+        if queries_without_page.has_key('page'):
+            del queries_without_page['page']
+    
+        context['queries'] = queries_without_page
+        return context
 
 
 class PostAdminCreateView(UserRequiredMixin, BlogMixin, CreateView):

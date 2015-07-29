@@ -1,0 +1,2 @@
+core_post:
+  title: [icontains, contains]

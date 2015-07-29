@@ -21,6 +21,7 @@ urlpatterns = patterns(
     url(r'^delete-post/(?P<pk>[\d]+)/$', views.PostAdminDeleteView.as_view(), name='post_admin_delete'),
     url(r'^update-post/(?P<pk>[\d]+)/$', views.PostAdminUpdateView.as_view(), name='post_admin_update'),
     url(r'^post/(?P<pk>[\d]+)/$', views.PostDetailView.as_view(), name="post-detail"),
+
 )
 
 
