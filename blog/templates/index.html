@@ -29,7 +29,9 @@
        
         <!-- Include search string when showing a filtered list -->
         {% if search_query %}
+        <div class="well">
         Search Results for title: {{search_query}}
+        </div>
         {% endif %}
         <!-- A single blog post -->
         {% for object in post_list %}

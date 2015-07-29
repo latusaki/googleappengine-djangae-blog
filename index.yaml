@@ -45,6 +45,12 @@ indexes:
 
 - kind: core_post
   properties:
+  - name: _idx_startswith_title
+  - name: created_at
+    direction: desc
+
+- kind: core_post
+  properties:
   - name: title
   - name: created_at
     direction: desc
